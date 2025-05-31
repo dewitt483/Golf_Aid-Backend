@@ -29,6 +29,7 @@ def signup():
 @app.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
+    print("Received:", data)
     username = data.get("username")
     password = data.get("password")
 
@@ -40,9 +41,12 @@ def login():
     conn.close()
 
     if user:
+        print("Login success")
         return jsonify({"success": True}), 200
     else:
+        print("Login failed")
         return jsonify({"success": False, "error": "Invalid credentials"}), 401
 
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5070)

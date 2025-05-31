@@ -3,7 +3,7 @@ import psycopg2
 
 def get_connection():
     return psycopg2.connect(
-        dbname="postgres",  # or postgres if no DB was created
+        dbname="mydb",  # or postgres if no DB was created
         user="postgres",
         password="mysecretpassword",
         host="localhost",
