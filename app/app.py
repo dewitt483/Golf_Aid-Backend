@@ -2,7 +2,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from db import get_connection
-
+from handi_funcs import handi_funcs
 app = Flask(__name__)
 CORS(app)  # allows requests from your iOS frontend
 
@@ -47,6 +47,22 @@ def login():
         print("Login failed")
         return jsonify({"success": False, "error": "Invalid credentials"}), 401
 
+@app.route("/add_round", methods=["POST"])
+def add_round():
+    data = request.get_json()
+    username = data.get("username")
+    score = data.get("score")
+
+    if not username or not score:
+        return jsonify({"success": False, "error": "Username and score are required"}), 400
+
+    handi = handi_funcs()
+    rid = handi.add_round(username, score)
+
+    if rid:
+        return jsonify({"success": True, "rid": rid}), 201
+    else:
+        return jsonify({"success": False, "error": "Failed to add round"}), 500
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5070)
